@@ -267,8 +267,13 @@ class _ImportSeedScreenState extends State<ImportSeedScreen> {
                             context,
                             MaterialPageRoute(
                               builder: (context) => WalletHome(
-                                  walletAddress:
-                                      state.wallet.accounts.first.address),
+                                walletAddress:
+                                    state.wallet.accounts.first.address,
+                                privateKey:
+                                    state.wallet.accounts.first.privateKey,
+                                accountIndex: state.wallet.accounts.first.index,
+                                networkId: 1,
+                              ),
                             ),
                           );
                           ScaffoldMessenger.of(context).showSnackBar(

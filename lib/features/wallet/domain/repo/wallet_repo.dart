@@ -1,6 +1,6 @@
 import 'package:ivy_dex/features/wallet/domain/entities/account_entity.dart';
 
-import '../entities/total_balance_entity.dart';
+import '../../../add_coin_to_wallet/domain/entities/token_balance.dart';
 
 abstract class WalletRepository {
   /// Creates the first account from a given mnemonic
@@ -21,12 +21,12 @@ abstract class WalletRepository {
   Future<AccountEntity> getActiveAccount();
 
   /// Adds a custom token to the specified account
-  Future<void> addTokenToAccount({
-    required AccountEntity account,
-    required String contractAddress,
-    required String symbol,
-    required int decimals,
-  });
+  // Future<void> addTokenToAccount({
+  //   required AccountEntity account,
+  //   required String contractAddress,
+  //   required String symbol,
+  //   required int decimals,
+  // });
 
   /// Gets the balances for all tokens in an account
   Future<List<TokenBalanceEntity>> getTokenBalances(AccountEntity account);

@@ -165,7 +165,11 @@ class _ConfirmSeedState extends State<ConfirmSeed> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => WalletHome(
-                            walletAddress: state.accounts[0].address),
+                          walletAddress: state.activeAccount.address,
+                          privateKey: state.activeAccount.privateKey,
+                          accountIndex: state.activeAccount.index,
+                          networkId: 1,
+                        ),
                       ),
                       (Route<dynamic> route) => false,
                     );

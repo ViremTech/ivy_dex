@@ -3,7 +3,7 @@ import 'package:ivy_dex/features/wallet/domain/entities/account_entity.dart';
 
 import 'package:ivy_dex/features/wallet/domain/repo/wallet_repo.dart';
 
-import '../entities/total_balance_entity.dart';
+import '../../../add_coin_to_wallet/domain/entities/token_balance.dart';
 
 class AccountParam {
   final AccountEntity account;

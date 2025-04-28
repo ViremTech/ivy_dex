@@ -33,6 +33,9 @@ class _LoginScreenState extends State<LoginScreen> {
               MaterialPageRoute(
                 builder: (context) => WalletHome(
                   walletAddress: '',
+                  privateKey: '',
+                  accountIndex: 1,
+                  networkId: 1,
                 ),
               ),
             );

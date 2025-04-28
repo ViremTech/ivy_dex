@@ -9,7 +9,7 @@ import 'package:ivy_dex/features/wallet/domain/entities/account_entity.dart';
 import 'package:ivy_dex/features/wallet/domain/repo/wallet_repo.dart';
 import 'package:ivy_dex/features/wallet/data/data_source/wallet_source.dart';
 
-import '../../domain/entities/total_balance_entity.dart';
+import '../../../add_coin_to_wallet/domain/entities/token_balance.dart';
 
 class WalletRepoImpl implements WalletRepository {
   final WalletLocalDataSource localDataSource;
@@ -59,16 +59,16 @@ class WalletRepoImpl implements WalletRepository {
     return localDataSource.getActiveAccount();
   }
 
-  @override
-  Future<void> addTokenToAccount({
-    required AccountEntity account,
-    required String contractAddress,
-    required String symbol,
-    required int decimals,
-  }) async {
-    await localDataSource.addTokenToAccount(
-        account, contractAddress, symbol, decimals);
-  }
+  // @override
+  // Future<void> addTokenToAccount({
+  //   required AccountEntity account,
+  //   required String contractAddress,
+  //   required String symbol,
+  //   required int decimals,
+  // }) async {
+  //   await localDataSource.addTokenToAccount(
+  //       account, contractAddress, symbol, decimals);
+  // }
 
   @override
   Future<List<TokenBalanceEntity>> getTokenBalances(

@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:ivy_dex/features/wallet/domain/entities/account_entity.dart';
 import 'package:bip39/bip39.dart' as bip39;
-import '../../domain/entities/total_balance_entity.dart';
+import '../../../add_coin_to_wallet/domain/entities/token_balance.dart';
 
 abstract class WalletLocalDataSource {
   Future<void> saveEncryptedMnemonic();
@@ -18,12 +18,12 @@ abstract class WalletLocalDataSource {
   Future<void> setActiveAccount(AccountEntity account);
   Future<AccountEntity> getActiveAccount();
 
-  Future<void> addTokenToAccount(
-    AccountEntity account,
-    String contractAddress,
-    String symbol,
-    int decimals,
-  );
+  // Future<void> addTokenToAccount(
+  //   AccountEntity account,
+  //   String contractAddress,
+  //   String symbol,
+  //   int decimals,
+  // );
 
   Future<List<TokenBalanceEntity>> getTokenBalances(AccountEntity account);
 }
@@ -32,7 +32,7 @@ class WalletLocalDataSourceImpl implements WalletLocalDataSource {
   final FlutterSecureStorage storage;
 
   static const _mnemonicKey = 'wallet_mnemonic';
-  // static const _passwordKey = 'wallet_password';
+
   static const _accountsKey = 'wallet_accounts';
   static const _activeAccountKey = 'active_account';
   static const _tokenPrefix = 'tokens_for_';
@@ -61,18 +61,6 @@ class WalletLocalDataSourceImpl implements WalletLocalDataSource {
     return value;
   }
 
-  // @override
-  // Future<void> savePassword(String password) async {
-  //   await storage.write(key: _passwordKey, value: password);
-  // }
-
-  // @override
-  // Future<String> getPassword() async {
-  //   final value = await storage.read(key: _passwordKey);
-  //   if (value == null) throw Exception("Password not found");
-  //   return value;
-  // }
-
   @override
   Future<void> saveAccounts(List<AccountEntity> accounts) async {
     final jsonString = jsonEncode(accounts.map((e) => e.toJson()).toList());
@@ -100,32 +88,32 @@ class WalletLocalDataSourceImpl implements WalletLocalDataSource {
     return AccountEntity.fromJson(jsonDecode(jsonString));
   }
 
-  @override
-  Future<void> addTokenToAccount(
-    AccountEntity account,
-    String contractAddress,
-    String symbol,
-    int decimals,
-  ) async {
-    final key = '$_tokenPrefix${account.address}';
-    final existing = await storage.read(key: key);
-    List<TokenBalanceEntity> tokens = [];
-    if (existing != null) {
-      final List<dynamic> jsonList = jsonDecode(existing);
-      tokens = jsonList.map((e) => TokenBalanceEntity.fromJson(e)).toList();
-    }
+  // @override
+  // Future<void> addTokenToAccount(
+  //   AccountEntity account,
+  //   String contractAddress,
+  //   String symbol,
+  //   int decimals,
+  // ) async {
+  //   final key = '$_tokenPrefix${account.address}';
+  //   final existing = await storage.read(key: key);
+  //   List<TokenBalanceEntity> tokens = [];
+  //   if (existing != null) {
+  //     final List<dynamic> jsonList = jsonDecode(existing);
+  //     tokens = jsonList.map((e) => TokenBalanceEntity.fromJson(e)).toList();
+  //   }
 
-    final newToken = TokenBalanceEntity(
-      symbol: symbol,
-      contractAddress: contractAddress,
-      decimals: decimals,
-      balance: 0.0,
-    );
+  //   final newToken = TokenBalanceEntity(
+  //     symbol: symbol,
+  //     contractAddress: contractAddress,
+  //     decimals: decimals,
+  //     balance: 0.0,
+  //   );
 
-    tokens.add(newToken);
-    await storage.write(
-        key: key, value: jsonEncode(tokens.map((e) => e.toJson()).toList()));
-  }
+  //   tokens.add(newToken);
+  //   await storage.write(
+  //       key: key, value: jsonEncode(tokens.map((e) => e.toJson()).toList()));
+  // }
 
   @override
   Future<List<TokenBalanceEntity>> getTokenBalances(

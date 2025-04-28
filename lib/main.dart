@@ -4,6 +4,14 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:ivy_dex/confiq/theme/dart_mode.dart';
 import 'package:ivy_dex/core/bloc/wallet_init_bloc/wallet_init_bloc.dart';
 import 'package:ivy_dex/core/cubit/auth_wallet_cubit.dart';
+import 'package:ivy_dex/features/add_coin_to_wallet/data/data_source/token_local_data_source.dart';
+import 'package:ivy_dex/features/add_coin_to_wallet/data/repository_impl/token_repo.dart';
+import 'package:ivy_dex/features/add_coin_to_wallet/domain/usecase/add_token_usecase.dart';
+import 'package:ivy_dex/features/add_coin_to_wallet/domain/usecase/get_account_token_usecase.dart';
+import 'package:ivy_dex/features/add_coin_to_wallet/domain/usecase/get_token_balance_usecase.dart';
+import 'package:ivy_dex/features/add_coin_to_wallet/domain/usecase/remove_token_usecase.dart';
+import 'package:ivy_dex/features/add_coin_to_wallet/domain/usecase/validate_ethereum_address_usecase.dart';
+import 'package:ivy_dex/features/add_coin_to_wallet/presentation/bloc/token_bloc.dart';
 import 'package:ivy_dex/features/auth/data/data_source/local_auth_datasource.dart';
 import 'package:ivy_dex/features/auth/data/repository_impl/auth_repo_impl.dart';
 import 'package:ivy_dex/features/auth/domain/usecase/delete_password.dart';
@@ -17,7 +25,7 @@ import 'package:ivy_dex/features/onboarding/domain/usecase/complete_onboarding.d
 import 'package:ivy_dex/features/onboarding/presentation/bloc/onboarding_bloc.dart';
 import 'package:ivy_dex/features/wallet/data/data_source/wallet_source.dart';
 import 'package:ivy_dex/features/wallet/data/repository_impl/wallet_repo_impl.dart';
-import 'package:ivy_dex/features/wallet/domain/usecase/add_token_to_account.dart';
+
 import 'package:ivy_dex/features/wallet/domain/usecase/get_active_account.dart';
 import 'package:ivy_dex/features/wallet/domain/usecase/get_all_account.dart';
 import 'package:ivy_dex/features/wallet/domain/usecase/get_saved_mnemonic.dart';
@@ -41,6 +49,29 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+        BlocProvider(
+            create: (context) => TokenBloc(
+                  addTokenUsecase: AddTokenUsecase(
+                      tokenRepo: TokenRepoImpl(
+                          localDataSource: TokenLocalDataSourceImpl(
+                              secureStorage: FlutterSecureStorage()))),
+                  removeTokenUseCase: RemoveTokenUsecase(
+                      tokenRepo: TokenRepoImpl(
+                          localDataSource: TokenLocalDataSourceImpl(
+                              secureStorage: FlutterSecureStorage()))),
+                  getAccountTokensUseCase: GetAccountTokensUseCase(
+                      tokenRepo: TokenRepoImpl(
+                          localDataSource: TokenLocalDataSourceImpl(
+                              secureStorage: FlutterSecureStorage()))),
+                  validateAddressUseCase: ValidateEthereumAddressUseCase(
+                      TokenRepoImpl(
+                          localDataSource: TokenLocalDataSourceImpl(
+                              secureStorage: FlutterSecureStorage()))),
+                  getTokenBalancesUseCase: GetTokenBalanceUsecase(
+                      tokenRepo: TokenRepoImpl(
+                          localDataSource: TokenLocalDataSourceImpl(
+                              secureStorage: FlutterSecureStorage()))),
+                )),
         BlocProvider(
           create: (context) => WalletInitBloc(
             storage: FlutterSecureStorage(),
@@ -85,9 +116,9 @@ class MyApp extends StatelessWidget {
                 getActive: GetActiveAccountUseCase(WalletRepoImpl(
                     localDataSource: WalletLocalDataSourceImpl(
                         storage: FlutterSecureStorage()))),
-                addToken: AddTokenToAccountUseCase(WalletRepoImpl(
-                    localDataSource: WalletLocalDataSourceImpl(
-                        storage: FlutterSecureStorage()))),
+                // addToken: AddTokenToAccountUseCase(WalletRepoImpl(
+                //     localDataSource: WalletLocalDataSourceImpl(
+                //         storage: FlutterSecureStorage()))),
                 getBalances: GetTokenBalancesUseCase(WalletRepoImpl(
                     localDataSource: WalletLocalDataSourceImpl(
                         storage: FlutterSecureStorage()))),

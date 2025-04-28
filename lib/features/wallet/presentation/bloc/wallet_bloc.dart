@@ -12,7 +12,7 @@ import 'package:ivy_dex/features/wallet/domain/usecase/get_total_balance.dart';
 import 'package:ivy_dex/features/wallet/domain/usecase/save_mnemonic.dart';
 import 'package:ivy_dex/features/wallet/domain/usecase/set_active_account.dart';
 
-import '../../domain/entities/total_balance_entity.dart';
+import '../../../add_coin_to_wallet/domain/entities/token_balance.dart';
 import '../../domain/usecase/get_token_balance.dart';
 
 part 'wallet_event.dart';
@@ -24,7 +24,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
   final GetAllAccountsUseCase getAccounts;
   final SetActiveAccountUseCase setActiveAccount;
   final GetActiveAccountUseCase getActive;
-  final AddTokenToAccountUseCase addToken;
+  // final AddTokenToAccountUseCase addToken;
   final GetTokenBalancesUseCase getBalances;
   final GetTotalBalanceUseCase getTotal;
   final SaveMnemonic saveMnemonic;
@@ -36,14 +36,14 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     required this.getAccounts,
     required this.setActiveAccount,
     required this.getActive,
-    required this.addToken,
+    // required this.addToken,
     required this.getBalances,
     required this.getTotal,
   }) : super(WalletInitial()) {
     on<LoadWalletEvent>(_onLoadWallet);
     on<DeriveAccountEvent>(_onDeriveAccount);
     on<SetActiveAccountEvent>(_onSetActiveAccount);
-    on<AddTokenEvent>(_onAddToken);
+    // on<AddTokenEvent>(_onAddToken);
     on<RefreshBalancesEvent>(_onRefreshBalances);
     on<GetSavedMnemonicEvent>(_onGetSavedMnemonic);
   }
@@ -111,20 +111,20 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     }
   }
 
-  Future<void> _onAddToken(
-      AddTokenEvent event, Emitter<WalletState> emit) async {
-    try {
-      await addToken(AddTokenParams(
-        account: event.account,
-        contractAddress: event.contractAddress,
-        symbol: event.symbol,
-        decimals: event.decimals,
-      ));
-      emit(TokenAddedSuccessfully());
-    } catch (e) {
-      emit(WalletError(message: e.toString()));
-    }
-  }
+  // Future<void> _onAddToken(
+  //     AddTokenEvent event, Emitter<WalletState> emit) async {
+  //   try {
+  //     await addToken(AddTokenParams(
+  //       account: event.account,
+  //       contractAddress: event.contractAddress,
+  //       symbol: event.symbol,
+  //       decimals: event.decimals,
+  //     ));
+  //     emit(TokenAddedSuccessfully());
+  //   } catch (e) {
+  //     emit(WalletError(message: e.toString()));
+  //   }
+  // }
 
   Future<void> _onRefreshBalances(
       RefreshBalancesEvent event, Emitter<WalletState> emit) async {
